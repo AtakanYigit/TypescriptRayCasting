@@ -1,0 +1,123 @@
+html, body, #roo, .App{
+    background-color:           #161616;
+    width:                      100vw;
+    max-width:                  100vw;
+    position:                   relative;     
+    overflow:                   hidden;
+    scroll-behavior:            smooth;
+    min-height:                 100vh;
+    -webkit-tap-highlight-color:transparent;
+}
+
+.App{
+    touch-action:               manipulation;
+    touch-action:               pan-x pan-y;
+}
+
+.noSelect{
+    -webkit-touch-callout:      none;
+      -webkit-user-select:      none;
+       -khtml-user-select:      none;
+         -moz-user-select:      none;
+          -ms-user-select:      none;
+              user-select:      none;
+}
+
+*, *:before, *:after{
+    box-sizing:             border-box;
+}
+
+html, body, div, span, object, iframe, figure, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, code, em, img, small, strike, strong, sub, sup, tt, b, u, i, ol, ul, li, fieldset, form, label, table, caption, tbody, tfoot, thead, tr, th, td, main, canvas, embed, footer, header, nav, section, video{
+    margin:                 0;
+    padding:                0;
+    border:                 0;
+    font-size:              100%;
+    vertical-align:         baseline;
+    text-rendering:         optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    text-size-adjust:       none;
+}
+
+canvas{
+    display:                block;
+    width:                  100%;
+    height:                 100%;
+}
+
+.infoBox{
+    position:               absolute; 
+    right:                  40px;
+    bottom:                 32px;
+    padding:                6px 4px;
+    border-radius:          4px;
+    display:                flex;
+    flex-direction:         column;
+    gap:                    4px;
+    transition:             all 0.2s ease-in-out;
+    color:                  white;
+    font-family:            "Poppins", sans-serif;
+    font-size:              1rem;
+    user-select:            none;
+    transform:              scale(0.85);
+}
+
+.infoBox:hover{
+    transform:              scale(1);
+    box-shadow:             0 0 16px 4px rgba(0,0,0,0.32);
+    color:                  black;
+    background-color:       white;
+}
+
+.infoBox h1{
+    padding:                16px 12px;
+    transition:             all 0.2s ease-in-out;
+    color:                  white;
+    background-color:       black;
+    border-radius:          4px;
+    width:                  100%;
+}
+
+.infoBox h1 span{
+    font-weight:            500;
+}
+
+.infoBox h1 span a{
+    transition:             all 0.2s ease-in-out;
+    color:                  white;
+    font-family:            "Poppins", sans-serif;
+    font-size:              1rem;
+    text-decoration:        none;
+    position:               relative;
+}
+
+.infoBox h1 span a::after{
+    content:                "";
+    position:               absolute; 
+    left:                   2px;
+    bottom:                 -2px;
+    height:                 2px;
+    background-color:       rgb(228, 228, 228);
+    transition:             all 0.2s ease-in-out;
+    opacity:                0;
+    width:                  0;
+    transition:             all 0.5s ease-in-out;
+}
+
+.infoBox:hover h1 span a::after{
+    opacity:                1;
+    width:                  98%;
+}
+
+.infoBox .infos{
+    padding:                16px 12px;
+    border-radius:          4px;
+    transition:             all 0.2s ease-in-out;
+    color:                  black;
+    background-color:       white;
+    width:                  100%;
+}
+
+.infoBox:hover .infos{
+    box-shadow:             0 0 8px 4px rgba(0,0,0,0.16);
+}
