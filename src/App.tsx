@@ -404,7 +404,7 @@ const App = () => {
         <>
             <canvas id = "canvas" width = {window.innerWidth} height = {window.innerHeight} onMouseMove = {setMousePosition} onMouseDown = {mouseDown} onMouseUp = {mouseUp}></canvas>
             <div className = "infoBox">
-                <h1>2D Ray Casting <span>- by <a href = "">Atakan Yiğit Çengeloğlu</a></span></h1>
+                <h1>2D Ray Casting <span>- by <a href = "https://github.com/AtakanYigit/TypescriptRayCasting">Atakan Yiğit Çengeloğlu</a></span></h1>
                 <div className = "infos">
                     <p>Hold Mouse Button to Increase Density</p>
                     <p>Press Space to Generate Random Map</p>
