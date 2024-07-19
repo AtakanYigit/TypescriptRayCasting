@@ -88,8 +88,8 @@ const App = () => {
     }
 
     //-----------------------SETTINGS-----------------------//
-    let defaultDensity = 90;
-    let lightDensity   = 90;
+    let defaultDensity = 4;
+    let lightDensity   = 4;
     let maxDensity     = 0.15;
     // let defaultDensity = 1.5;
     // let lightDensity   = 1.5;
@@ -120,11 +120,11 @@ const App = () => {
         boundaries = [];
                     
         //Creating Boundaries       (x1,    y1,     x2,     y2)
-        // boundaries.push(new boundary(700,   200,    700,    800));
-        // boundaries.push(new boundary(1200,  200,    1200,   800));
+        boundaries.push(new boundary(700,   200,    700,    800));
+        boundaries.push(new boundary(1200,  200,    1200,   800));
 
         //Test Boundaries
-        boundaries.push(new boundary(0,  1100, 1900,   1100));
+        // boundaries.push(new boundary(0,  1100, 1900,   1100));
         // boundaries.push(new boundary(100,  0, 100,   1400));
 
         refresh();
@@ -197,6 +197,29 @@ const App = () => {
     }
 
     type quadrant = 1|2|3|4;
+
+    // const getReflectAngle = (line1StartingPoint:point, line1EndingPoint:point, line2StartingPoint:point, line2EndingPoint:point) => {
+    //     let x1 = line1StartingPoint.x;
+    //     let y1 = line1StartingPoint.y;
+    //     let x2 = line1EndingPoint.x;
+    //     let y2 = line1EndingPoint.y;
+    //     let x3 = line2StartingPoint.x;
+    //     let y3 = line2StartingPoint.y;
+    //     let x4 = line2EndingPoint.x;
+    //     let y4 = line2EndingPoint.y;
+      
+    //     const incidentAngle           = Math.atan2(y2 - y1, x2 - x1) * (180 / Math.PI);
+    //     const wallAngle               = Math.atan2(y4 - y3, x4 - x3) * (180 / Math.PI);
+    //     const direction = (wallAngle - incidentAngle < 0) ? -1 : 1;
+    //     const normalizedIncidentAngle = (incidentAngle + 360) % 360;
+    //     const normalizedWallAngle     = (wallAngle + 360) % 360;
+    
+    //     const angleDiff  = normalizedWallAngle - normalizedIncidentAngle;
+    //     let reflectAngle = normalizedWallAngle + (direction * 180) - angleDiff;
+    //     reflectAngle     = (reflectAngle + 360) % 360;
+        
+    //     return reflectAngle;
+    // }
     
     const getReflectAngle = (light:ray, wall:boundary) => {
         let x1 = light.startingPoint.x;
@@ -272,7 +295,7 @@ const App = () => {
                 const intersectionPoints = getIntersectionPoint(rays[j].startingPoint, rays[j].endingPoint, wall.startingPoint, wall.endingPoint);
                 if(intersectionPoints){
                     const distanceToIntersection = getDistanceBetweenPoints(rays[j].startingPoint.x, rays[j].startingPoint.y, intersectionPoints.x, intersectionPoints.y);
-                    if(!rays[j].closestIntersection || rays[j].closestIntersection.distance > distanceToIntersection){
+                    if(!rays[j].closestIntersection || rays[j].closestIntersection?.distance || 0 > distanceToIntersection){
                         rays[j].closestIntersection = {x: intersectionPoints.x, y: intersectionPoints.y, distance: distanceToIntersection, wall: wall};
                     }
                 }
@@ -280,12 +303,12 @@ const App = () => {
             
             if(rays[j].closestIntersection){
                 const light = rays[j];
-                light.drawIntersect(light.closestIntersection.x, light.closestIntersection.y);
+                light.drawIntersect(light.closestIntersection?.x || 0, light.closestIntersection?.y || 0);
                 let reflectedLineThickness = light.thickness * .7;
                 reflectedLineThickness = Number(reflectedLineThickness.toFixed(2));
 
                 if(reflectedLineThickness > .05){
-                    reflectingRays.push(new ray(light.closestIntersection.x, light.closestIntersection.y, getReflectAngle(light, light.closestIntersection.wall), reflectedLineThickness, true));
+                    reflectingRays.push(new ray(light.closestIntersection?.x || 0, light.closestIntersection?.y || 0, getReflectAngle(light, light.closestIntersection?.wall || new boundary(0, 0, 0, 0)), reflectedLineThickness, true));
                 }
             }else{
                 rays[j].draw();
@@ -301,7 +324,7 @@ const App = () => {
                 const intersectionPoints = getIntersectionPoint(reflectingRays[i].startingPoint, reflectingRays[i].endingPoint, wall.startingPoint, wall.endingPoint);
                 if(intersectionPoints){
                     const distanceToIntersection = getDistanceBetweenPoints(reflectingRays[i].startingPoint.x, reflectingRays[i].startingPoint.y, intersectionPoints.x, intersectionPoints.y);
-                    if(!reflectingRays[i].closestIntersection || reflectingRays[i].closestIntersection.distance > distanceToIntersection){
+                    if(!reflectingRays[i].closestIntersection || reflectingRays[i].closestIntersection?.distance || 0 > distanceToIntersection){
                         reflectingRays[i].closestIntersection = {x: intersectionPoints.x, y: intersectionPoints.y, distance: distanceToIntersection, wall: wall};
                     }
                 }
@@ -309,7 +332,7 @@ const App = () => {
                         
             if(reflectingRays[i].closestIntersection){
                 const light = reflectingRays[i];
-                light.drawIntersect(light.closestIntersection.x, light.closestIntersection.y);
+                light.drawIntersect(light.closestIntersection?.x || 0, light.closestIntersection?.y || 0);
                 let reflectedLineThickness = light.thickness * .7;
                 reflectedLineThickness = Number(reflectedLineThickness.toFixed(2));
 
@@ -317,20 +340,20 @@ const App = () => {
                 let xDislocation = 0;
                 let yDislocation = 0;
 
-                if(light.startingPoint.x < light.closestIntersection.x){
+                if(light.closestIntersection?.x && light.startingPoint.x < light.closestIntersection?.x){
                     xDislocation = -6;
                 }else{
                     xDislocation = 6;
                 }
 
-                if(light.startingPoint.y < light.closestIntersection.y){
+                if(light.closestIntersection?.y && light.startingPoint.y < light.closestIntersection?.y){
                     yDislocation = -2;
                 }else{
                     yDislocation = 2;
                 }
 
                 if(reflectedLineThickness > .05){
-                    reflectingRays.push(new ray(light.closestIntersection.x + xDislocation, light.closestIntersection.y + yDislocation, getReflectAngle(light, light.closestIntersection.wall), reflectedLineThickness, true));
+                    reflectingRays.push(new ray(light.closestIntersection?.x || 0 + xDislocation, light.closestIntersection?.y || 0 + yDislocation, getReflectAngle(light, light.closestIntersection?.wall || new boundary(0, 0, 0, 0)), reflectedLineThickness, true));
                 }
             }else{
                 reflectingRays[i].draw();
@@ -385,8 +408,18 @@ const App = () => {
             clearScreen();
             boundaries = [];
 
-            for(let i = 0; i < 2 ; i++){
-                boundaries.push(new boundary(Math.random() * window.innerWidth, Math.random() * window.innerHeight, Math.random() * window.innerWidth, Math.random() * window.innerHeight));
+            //Original Boundaries Generating Function
+            // for(let i = 0; i < 2 ; i++){
+            //     boundaries.push(new boundary(Math.random() * window.innerWidth, Math.random() * window.innerHeight, Math.random() * window.innerWidth, Math.random() * window.innerHeight));
+            // }
+
+            //Currently For Production
+            const boundaryCount = Math.floor(Math.random() * 4) + 1;
+            for(let i = 0; i < boundaryCount ; i++){
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+
+                boundaries.push(new boundary(x, y, x + Math.random() * 200, y + Math.random() * 600));
             }
 
             refresh();
